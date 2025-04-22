@@ -1,0 +1,35 @@
+{
+    "Go Test Function": {
+        "prefix": "gotestfunc",
+        "body": [
+            "func Test$1(t *testing.T) {",
+            "    $0",
+            "}"
+        ],
+        "description": "Go test function template"
+    },
+    "Go Benchmark Function": {
+        "prefix": "gobenchfunc",
+        "body": [
+            "func Benchmark$1(b *testing.B) {",
+            "    $0",
+            "}"
+        ],
+        "description": "Go benchmark function template"
+    },
+    "Go Test Package": {
+        "prefix": "gotestpkg",
+        "body": [
+            "package $1",
+            "",
+            "import (",
+            "  \"testing\"",
+            ")",
+            "",
+            "func Test$1(t *testing.T) {",
+            "  $0",
+            "}"
+        ],
+        "description": "Go test package template"
+    }
+}

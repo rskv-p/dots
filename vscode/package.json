@@ -1,0 +1,16 @@
+{
+  "name": "@uhome/vscode-settings",
+  "private": true,
+  "contributes": {
+    "snippets": [
+      {
+        "language": "go",
+        "path": "./snippets/go.json"
+      }
+
+    ]
+  },
+  "engines": {
+    "vscode": "^0.0.1"
+  }
+}
