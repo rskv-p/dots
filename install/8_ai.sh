@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Функция для вывода сообщений
+# Function to print information messages in green
 function echo_info() {
     echo -e "\033[1;32m$1\033[0m"
 }
 
-# Установка драйверов NVIDIA
-echo_info "Проверка установки драйвера NVIDIA..."
+# Install NVIDIA drivers
+echo_info "Checking if NVIDIA driver is installed..."
 if ! type nvidia-smi &> /dev/null; then
-    echo_info "Драйвер NVIDIA не установлен. Устанавливаем драйвер..."
+    echo_info "NVIDIA driver is not installed. Installing the driver..."
 
-    # Проверяем пакетный менеджер и устанавливаем драйвер
+    # Check package manager and install the driver
     if type apt-get &> /dev/null; then
         # Ubuntu / Debian
         sudo apt update
@@ -22,26 +22,26 @@ if ! type nvidia-smi &> /dev/null; then
         # Fedora
         sudo dnf install -y akmod-nvidia nvidia-driver
     else
-        echo_info "Поддержка установки драйвера для данной ОС не найдена."
+        echo_info "Driver installation is not supported for this OS."
         exit 1
     fi
 
-    # Перезагрузим систему для применения изменений
-    echo_info "Драйвер NVIDIA установлен. Требуется перезагрузка для применения изменений."
-    read -p "Перезагрузить систему? [y/N]: " answer
+    # Reboot system to apply changes
+    echo_info "NVIDIA driver installed. A reboot is required to apply changes."
+    read -p "Reboot now? [y/N]: " answer
     if [[ "$answer" =~ ^[Yy]$ ]]; then
         sudo reboot
     fi
 else
-    echo_info "Драйвер NVIDIA уже установлен."
+    echo_info "NVIDIA driver is already installed."
 fi
 
-# Установка CUDA
-echo_info "Проверка установки CUDA..."
+# Install CUDA
+echo_info "Checking if CUDA is installed..."
 if ! type nvcc &> /dev/null; then
-    echo_info "CUDA не установлена. Устанавливаем CUDA..."
+    echo_info "CUDA is not installed. Installing CUDA..."
 
-    # Установка CUDA
+    # Install CUDA
     if type apt-get &> /dev/null; then
         # Ubuntu / Debian
         sudo apt update
@@ -53,35 +53,35 @@ if ! type nvcc &> /dev/null; then
         # Fedora
         sudo dnf install -y cuda
     else
-        echo_info "Поддержка установки CUDA для данной ОС не найдена."
+        echo_info "CUDA installation is not supported for this OS."
         exit 1
     fi
 
-    # Перезагрузим систему для применения изменений
-    echo_info "CUDA установлена. Требуется перезагрузка для применения изменений."
-    read -p "Перезагрузить систему? [y/N]: " answer
+    # Reboot system to apply changes
+    echo_info "CUDA installed. A reboot is required to apply changes."
+    read -p "Reboot now? [y/N]: " answer
     if [[ "$answer" =~ ^[Yy]$ ]]; then
         sudo reboot
     fi
 else
-    echo_info "CUDA уже установлена."
+    echo_info "CUDA is already installed."
 fi
 
-# Установка переменных окружения для CUDA
-echo_info "Настройка переменных окружения для CUDA..."
+# Set environment variables for CUDA
+echo_info "Setting up environment variables for CUDA..."
 echo 'export PATH=/usr/local/cuda/bin:$PATH' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
 
-# Применение изменений в текущей сессии
+# Apply changes to the current session
 source ~/.bashrc
 
-# Проверка успешности установки
-echo_info "Проверяем установку NVIDIA и CUDA..."
+# Verify the installation
+echo_info "Verifying NVIDIA and CUDA installation..."
 
-# Проверка драйвера NVIDIA
+# Check NVIDIA driver
 nvidia-smi
 
-# Проверка CUDA
+# Check CUDA
 nvcc --version
 
-echo_info "Установка NVIDIA и CUDA завершена!"
+echo_info "NVIDIA and CUDA installation complete!"

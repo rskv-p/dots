@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Array for package managers and their install commands
+# Array of package managers with their install commands
 declare -A package_managers=(
   ["pkg"]="pkg install -y"
   ["apt-get"]="sudo apt install -y"
@@ -9,7 +9,7 @@ declare -A package_managers=(
   ["pacman"]="yes | sudo pacman -S"
 )
 
-# Function to install a package
+# Function to install a package using available package manager
 install_package() {
   local package=$1
   for manager in "${!package_managers[@]}"; do
@@ -20,12 +20,12 @@ install_package() {
       return 0
     fi
   done
-  # Print error message if no suitable package manager is found
+  # Error message if no suitable package manager found
   echo "$package: Failed to find a suitable package manager."
   return 1
 }
 
-# Check if Zsh is already installed
+# Check if Zsh is installed
 if type zsh &> /dev/null; then
   echo 'Zsh is already installed, skipping installation.'
 else
@@ -38,7 +38,7 @@ else
   fi
 fi
 
-# Ask if user wants to change the default shell to Zsh
+# Ask user to change the default shell to Zsh
 read -p 'Change default login shell to Zsh? [y/N]: ' answer
 case $answer in
   [Yy]* ) chsh -s "$(which zsh)";;

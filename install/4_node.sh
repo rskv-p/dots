@@ -1,3 +1,6 @@
+#!/bin/bash
+
+# Install Node.js
 echo 'Installing Node.js...'
 
 # Check if the system is running under "ish" (which doesn't support fnm)
@@ -7,7 +10,7 @@ if [ $(uname -r | grep -i ish) ]; then
   exit 0
 fi
 
-# Ensure fnm is installed
+# Ensure fnm (Fast Node Manager) is installed
 if ! type fnm &> /dev/null; then
   echo 'fnm is not installed, installing via curl...'
   curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/share/fnm" --skip-shell
@@ -17,11 +20,11 @@ fi
 
 echo 'Installing Node.js via fnm...'
 
-# Install the LTS version of Node.js
+# Install the LTS (Long Term Support) version of Node.js
 fnm install --lts
 fnm alias lts-latest default
 
-# Ensure npm is up-to-date
+# Ensure npm (Node Package Manager) is up-to-date
 echo 'Updating npm to the latest version...'
 npm i -g npm@latest
 

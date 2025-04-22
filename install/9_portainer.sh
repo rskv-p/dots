@@ -1,26 +1,32 @@
 #!/bin/bash
 
-# Установка Docker (если не установлен)
+# Install Docker if it's not already installed
 if ! type "docker" &>/dev/null; then
-  echo "Устанавливаю Docker..."
+  echo "Installing Docker..."
   
+  # Update package index and install dependencies for Docker installation
   sudo apt update
   sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+
+  # Add Docker’s official GPG key and install Docker
   curl -fsSL https://get.docker.com -o get-docker.sh
   sudo sh get-docker.sh
+
+  # Add the current user to the Docker group to avoid using 'sudo' with Docker commands
   sudo usermod -aG docker $USER
-  echo "Docker установлен."
+  
+  echo "Docker has been successfully installed."
 else
-  echo "Docker уже установлен."
+  echo "Docker is already installed."
 fi
 
-# Установка Portainer
-echo "Устанавливаю Portainer..."
+# Install Portainer
+echo "Installing Portainer..."
 
-# Создаем том для Portainer
+# Create a Docker volume for Portainer data
 sudo docker volume create portainer_data
 
-# Запуск контейнера Portainer
+# Run Portainer container
 sudo docker run -d -p 9000:9000 -p 9443:9443 \
   --name portainer \
   --restart always \
@@ -28,4 +34,4 @@ sudo docker run -d -p 9000:9000 -p 9443:9443 \
   -v portainer_data:/data \
   portainer/portainer-ce:latest
 
-echo "Portainer установлен и запущен. Доступ через http://localhost:9000 или https://localhost:9443."
+echo "Portainer has been installed and is running. Access it at http://localhost:9000 or https://localhost:9443."

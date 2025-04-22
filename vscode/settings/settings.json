@@ -32,9 +32,7 @@
   "telemetry.telemetryLevel": "off",
   "workbench.reduceMotion": "on",
   // Cursor and navigation
-  "editor.cursorStyle": "block",
   "editor.cursorSmoothCaretAnimation": "explicit",
-  "editor.smoothScrolling": true,
   // Git settings
   "git.enableCommitSigning": true,
   "git.ignoreMissingGitWarning": true,
@@ -47,7 +45,6 @@
   "workbench.settings.editor": "json",
   // Additional editor settings
   "editor.renderWhitespace": "boundary",
-  "editor.scrollBeyondLastLine": false,
   "editor.fontVariations": true,
   "editor.experimental.asyncTokenization": true,
   "editor.experimentalWhitespaceRendering": "svg",
