@@ -1,104 +1,34 @@
 #!/bin/bash
 
-GIT_NAME=${GIT_NAME:-"rskv-p"}
-GIT_MAIL=${GIT_MAIL:-"malius@tutamail.com.com"}
-
-log() {
-  # Custom log function for better logging with timestamp
-  echo "[$(date +"%Y-%m-%d %H:%M:%S")] $1"
+# Function to print information messages in green
+function echo_info() {
+    echo -e "\033[1;32m$1\033[0m"
 }
 
-check_command() {
-  # Check if a command exists
-  command -v "$1" >/dev/null 2>&1 || { log "Error: $1 is not installed. Exiting..."; exit 1; }
-}
+# Run all install scripts
+install_scripts=(
+  "install/0_requirements.sh"
+  "install/1_fonts.sh"
+  "install/2_zsh.sh"
+  "install/3_powerlevel10k.sh"
+  "install/4_brew.sh"
+  "install/5_node.sh"
+  "install/6_nvidia.sh"
+  "install/7_go.sh"
+  "install/8_portainer.sh"
+  "install/9_qemu.sh"
+)
 
-install() {
-  log "Starting installation of scripts..."
+echo_info "Starting bootstrap installation..."
 
-  for INSTALL_SCRIPT in ~/dots/scripts/install/*.sh; do
-    if [ -f "$INSTALL_SCRIPT" ]; then
-      log "Running $INSTALL_SCRIPT..."
-      bash ${INSTALL_SCRIPT} || { log "Failed to run $INSTALL_SCRIPT"; exit 1; }
-    else
-      log "Install script $INSTALL_SCRIPT not found!"
-    fi
-  done
-
-  log "Installation of scripts completed."
-}
-
-backup() {
-  if [ -f ${1} ]; then
-    mkdir -p $(dirname ${1})
-    TIMESTAMP=$(date +"%Y-%m-%d,%H:%M:%S")
-    log "Backing up ${1} to ${1}.backup.${TIMESTAMP}"
-    mv ${1} ${1}.backup.${TIMESTAMP}
+# Loop through all scripts and run them
+for script in "${install_scripts[@]}"; do
+  if [ -f "$script" ]; then
+    echo_info "Running $script..."
+    source "$script"
+  else
+    echo_error "Script $script not found!"
   fi
-}
+done
 
-setup_zsh() {
-  log "Setting up Zsh..."
-
-  # Check if files already exist before creating symlinks
-  backup $HOME/.zshenv
-  backup $HOME/.zlogin
-  backup $HOME/.zimrc
-
-  ln -s $HOME/dots/zsh/zim/zshenv.zsh $HOME/.zshenv
-  ln -s $HOME/dots/zsh/zim/zlogin.zsh $HOME/.zlogin
-  ln -s $HOME/dots/zsh/zim/zimrc.zsh $HOME/.zimrc
-  echo "source $HOME/dots/zsh/zim/zshrc.zsh" > $HOME/.zshrc
-
-  # Ensure local configuration files exist
-  mkdir -p ~/dots/local
-  touch ~/dots/local/local.zsh
-  touch ~/dots/local/theme.zsh
-
-  log "Installing Zsh modules..."
-  zsh ~/.zim/zimfw.zsh install || { log "Failed to install Zsh modules"; exit 1; }
-
-  zsh -c "echo 'POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true' >>! ~/.zshrc"
-
-  log "Zsh setup completed!"
-}
-
-setup_git() {
-  log "Setting up Git..."
-
-  # Ensure git is available
-  check_command "git"
-
-  git config --global user.name ${GIT_NAME}
-  git config --global user.email ${GIT_MAIL}
-  git config --global pull.rebase true
-  git config --global core.editor code
-  git config --global core.ignoreCase false
-  git config --global init.defaultBranch main
-
-  log "Git setup completed!"
-}
-
-setup_fnm_completions_for_linux() {
-  if [ "$(uname)" = "Linux" ]; then
-    export PATH="$HOME/.local/share/fnm:$PATH"
-    eval "$(fnm env)"
-
-    rm -f ~/dots/zsh/completions/_fnm
-    fnm completions --shell zsh > ~/dots/zsh/completions/_fnm
-    log "FNM completions set up for Linux"
-  fi
-}
-
-# Check required commands before starting installation
-check_command "git"
-check_command "zsh"
-
-# Run the installation process
-install
-setup_zsh
-setup_git
-setup_fnm_completions_for_linux
-
-log "🎉 All Done!"
-log "🙌 Some changes might need re-login to take effect."
+echo_info "Bootstrap installation completed!"

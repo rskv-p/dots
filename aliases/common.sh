@@ -1,24 +1,65 @@
 # Common command aliases for Linux/macOS
 
-alias c='clear'                       # Clear the terminal
-alias echopath='echo $PATH | tr ":" "\n"'  # Print PATH line by line
-alias edit-last-command-in-editor='fc'  # Edit the last command in the default editor
-alias h='history | less'               # View history with paging
-alias l='ls -lhF'                      # List files with human-readable sizes
-alias la='ls -AlhF'                    # List all files with human-readable sizes
-alias ll='ls -alhF'                    # List detailed files with human-readable sizes
-alias m='make'                         # Run make
-alias now='date +"%Y-%m-%d %H:%M:%S"'   # Print current date and time
-alias p8='ping 8.8.8.8'                # Ping Google DNS
-alias p='ping'                          # General ping command
-alias psssh='ps aux | grep ssh'         # Search for running ssh processes
-alias t.='tree .'                      # Display directory tree
+# Clear the terminal
+alias c='clear'
 
-# File manager
-alias e.='xdg-open .'                  # Open current directory with file manager
-alias o.='xdg-open .'                  # Open current directory with file manager
+# Print PATH line by line
+alias echopath='echo $PATH | tr ":" "\n"'
 
-# Make directory and touch a file
+# Edit the last command in the default editor
+alias edit-last-command-in-editor='fc'
+
+# View history with paging
+alias h='history | less'
+
+# List files with human-readable sizes
+alias l='ls -lhF'
+
+# List all files with human-readable sizes
+alias la='ls -AlhF'
+
+# List detailed files with human-readable sizes
+alias ll='ls -alhF'
+
+# Run make
+alias m='make'
+
+# Print current date and time
+alias now='date +"%Y-%m-%d %H:%M:%S"'
+
+# Ping Google DNS
+alias p8='ping 8.8.8.8'
+
+# General ping command
+alias p='ping'
+
+# Search for running ssh processes
+alias psssh='ps aux | grep ssh'
+
+# Display directory tree
+alias t.='tree .'
+
+# File manager - Open current directory with file manager
+alias e.='xdg-open .'
+alias o.='xdg-open .'
+
+# Make directory and touch a file (create parent directories if needed)
 touchp () {
-  mkdir -p $(dirname "$1") && touch "$1"  # Create parent directories and touch a file
+  mkdir -p $(dirname "$1") && touch "$1"
 }
+
+# Install utilities and create aliases for them (from lsd, bpytop, bat, fzf, stow)
+# lsd - Enhanced ls with icons and colors
+alias lsd='lsd'
+
+# bpytop - Python-based system resource monitor
+alias bpytop='bpytop'
+
+# bat - A cat clone with syntax highlighting and Git integration
+alias bat='batcat'
+
+# fzf - Command-line fuzzy finder
+alias fzf='fzf'
+
+# stow - Symlink manager for dotfiles
+alias stow='stow'
